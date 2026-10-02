@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hyper-battery-maher.github.io/hyper-battery-maher/sitemap.xml
