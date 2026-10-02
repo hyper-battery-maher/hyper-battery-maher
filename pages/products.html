@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>محصولات باتری | هایپر باتری ماهر</title>
+<meta name="description" content="مشاهده محصولات و باتری‌های موجود در هایپر باتری ماهر اسلامشهر.">
+<link rel="icon" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/site.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="../index.html">
+      <img src="../assets/logo.png" alt="هایپر باتری ماهر">
+      <div><b>هایپر باتری ماهر</b><small>باتری اسلامشهر</small></div>
+    </a>
+    <nav class="links">
+      <a href="../index.html">خانه</a>
+      <a class="active" href="products.html">محصولات</a>
+      <a href="brands.html">برندها</a>
+      <a href="services.html">خدمات</a>
+      <a href="guide.html">راهنمای انتخاب</a>
+      <a href="faq.html">سوالات متداول</a>
+      <a href="about.html">درباره ما</a>
+      <a href="contact.html">تماس</a>
+    </nav>
+    <a class="call" data-phone href="tel:09351232343">تماس سریع</a>
+  </div>
+</header>
+
+<main>
+<section class="page-head">
+  <div class="container">
+    <span class="kicker">PRODUCTS</span>
+    <h1>محصولات باتری</h1>
+    <p>محصولات فعال ثبت‌شده در پنل مدیریت را جستجو و بر اساس دسته‌بندی بررسی کنید.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="filterbar">
+      <input id="search" class="field search" placeholder="جستجوی برند، محصول یا آمپراژ...">
+      <select id="category" class="field"><option value="">همه دسته‌ها</option></select>
+    </div>
+    <div id="productsGrid" class="products">
+      <div class="empty">در حال دریافت محصولات...</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-flex">
+    <div><b>هایپر باتری ماهر</b> · باتری اسلامشهر</div>
+    <div>اسلامشهر، خیابان گلها، نبش البرز ۷</div>
+    <div>© <span id="year"></span></div>
+  </div>
+</footer>
+
+<dialog id="productModal">
+  <button class="close" onclick="document.getElementById('productModal').close()">×</button>
+  <div id="modalContent"></div>
+</dialog>
+
+<script src="../js/config.js"></script>
+<script src="../js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>برندهای باتری | هایپر باتری ماهر</title>
+<meta name="description" content="برندهای موجود باتری در هایپر باتری ماهر اسلامشهر.">
+<link rel="icon" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/site.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header class="header">
+  <div class="container nav">
+    <a class="brand" href="../index.html">
+      <img src="../assets/logo.png" alt="هایپر باتری ماهر">
+      <div><b>هایپر باتری ماهر</b><small>باتری اسلامشهر</small></div>
+    </a>
+    <nav class="links">
+      <a href="../index.html">خانه</a>
+      <a href="products.html">محصولات</a>
+      <a class="active" href="brands.html">برندها</a>
+      <a href="services.html">خدمات</a>
+      <a href="guide.html">راهنمای انتخاب</a>
+      <a href="faq.html">سوالات متداول</a>
+      <a href="about.html">درباره ما</a>
+      <a href="contact.html">تماس</a>
+    </nav>
+    <a class="call" data-phone href="tel:09351232343">تماس سریع</a>
+  </div>
+</header>
+
+<main>
+<section class="page-head">
+  <div class="container">
+    <span class="kicker">BRANDS</span>
+    <h1>برندهای موجود</h1>
+    <p>برند موردنظر را انتخاب کنید تا محصولات همان برند را ببینید.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div id="brandGrid" class="category-grid">
+      <div class="empty">در حال دریافت برندها...</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-flex">
+    <div><b>هایپر باتری ماهر</b> · باتری اسلامشهر</div>
+    <div>اسلامشهر، خیابان گلها، نبش البرز ۷</div>
+    <div>© <span id="year"></span></div>
+  </div>
+</footer>
+
+<script src="../js/config.js"></script>
+<script>
+const cfg = window.SUPABASE_CONFIG || {};
+const SB = (cfg.url && cfg.anonKey)
+  ? window.supabase.createClient(cfg.url, cfg.anonKey)
+  : null;
+const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+}[c]));
+
+async function loadBrands() {
+  const grid = document.getElementById("brandGrid");
+
+  if (!SB) {
+    grid.innerHTML = '<div class="empty">اتصال Supabase تنظیم نشده است.</div>';
+    return;
+  }
+
+  const result = await SB.from("brands")
+    .select("*")
+    .eq("active", true)
+    .order("name", { ascending: true });
+
+  if (result.error) {
+    console.error(result.error);
+    grid.innerHTML = '<div class="empty">خطا در دریافت برندها.</div>';
+    return;
+  }
+
+  const brands = result.data || [];
+
+  if (!brands.length) {
+    grid.innerHTML = '<div class="empty">هنوز برندی ثبت نشده است.</div>';
+    return;
+  }
+
+  grid.innerHTML = brands.map(brand => `
+    <a class="category-card" href="brand.html?id=${encodeURIComponent(brand.id)}">
+      <div class="big">🔋</div>
+      <h3>${esc(brand.name)}</h3>
+      <p>${esc(brand.description || "مشاهده محصولات این برند")}</p>
+      <span class="btn primary">مشاهده محصولات</span>
+    </a>
+  `).join("");
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+loadBrands();
+</script>
+</body>
+</html>

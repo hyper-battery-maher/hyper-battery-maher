@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>محصولات برند | هایپر باتری ماهر</title>
+
+  <meta
+    name="description"
+    content="محصولات برند در هایپر باتری ماهر اسلامشهر"
+  >
+
+  <link rel="icon" href="../assets/logo.png">
+  <link rel="stylesheet" href="../css/site.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/config.js"></script>
+
+  <style>
+    /* اندازه لوگوی هدر */
+    .site-logo {
+      display: flex;
+      align-items: center;
+      width: auto;
+      max-width: 70px;
+    }
+
+    .site-logo img {
+      width: 58px !important;
+      height: 58px !important;
+      max-width: 58px !important;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* فاصله و ظاهر بخش برند */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .brand-header-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 18px;
+      object-fit: contain;
+      background: #fff;
+      padding: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    }
+
+    .brand-header-info h1 {
+      margin-bottom: 8px;
+    }
+
+    /* پیام‌های خالی */
+    .empty {
+      padding: 30px;
+      text-align: center;
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+  <div class="container nav">
+
+
+    <!-- لوگوی سایت -->
+
+    <a
+      class="brand site-logo"
+      href="../index.html"
+    >
+
+      <img
+        src="../assets/logo.png"
+        alt="هایپر باتری ماهر"
+      >
+
+      <div>
+        <b>هایپر باتری ماهر</b>
+        <small>باتری اسلامشهر</small>
+      </div>
+
+    </a>
+
+
+    <!-- منو -->
+
+    <nav class="links">
+
+      <a href="../index.html">
+        خانه
+      </a>
+
+      <a href="products.html">محصولات</a>
+      <a href="brands.html">برندها</a>
+
+      <a href="services.html">
+        خدمات
+      </a>
+
+      <a href="guide.html">
+        راهنمای انتخاب
+      </a>
+
+      <a href="faq.html">
+        سوالات متداول
+      </a>
+
+      <a href="about.html">
+        درباره ما
+      </a>
+
+      <a href="contact.html">
+        تماس
+      </a>
+
+    </nav>
+
+
+    <a
+      class="call"
+      data-phone
+      href="tel:09351232343"
+    >
+      تماس سریع
+    </a>
+
+
+  </div>
+
+</header>
+
+
+
+<main>
+
+
+  <!-- معرفی برند -->
+
+  <section class="page-head">
+
+    <div class="container">
+
+      <div class="brand-header">
+
+        <img
+          id="brandLogo"
+          class="brand-header-logo"
+          src="../assets/logo.png"
+          alt="برند"
+        >
+
+        <div class="brand-header-info">
+
+          <span class="kicker">
+            BRAND PRODUCTS
+          </span>
+
+          <h1 id="brandName">
+            در حال بارگذاری...
+          </h1>
+
+          <p id="brandDescription">
+            محصولات این برند
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- محصولات -->
+
+  <section class="section">
+
+    <div class="container">
+
+
+      <div class="section-head">
+
+        <div>
+
+          <span class="kicker">
+            PRODUCTS
+          </span>
+
+          <h2>
+            محصولات این برند
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="productsGrid"
+        class="products"
+      >
+
+        <div class="empty">
+          در حال دریافت محصولات...
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+
+<footer>
+
+  <div class="container footer-flex">
+
+    <div>
+
+      <b>
+        هایپر باتری ماهر
+      </b>
+
+      · باتری اسلامشهر
+
+    </div>
+
+
+    <div>
+
+      اسلامشهر، خیابان گلها، نبش البرز ۷
+
+    </div>
+
+
+    <div>
+
+      ©
+      <span id="year"></span>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<script>
+
+
+/* -----------------------------
+   اتصال به Supabase
+----------------------------- */
+
+const cfg =
+  window.SUPABASE_CONFIG || {};
+
+
+const SB =
+  window.supabase.createClient(
+    cfg.url,
+    cfg.anonKey
+  );
+
+
+
+/* -----------------------------
+   ابزار امن برای نمایش متن
+----------------------------- */
+
+const esc = value =>
+
+  String(value ?? "")
+    .replace(
+      /[&<>"']/g,
+
+      char => ({
+
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+
+      }[char])
+
+    );
+
+
+
+/* -----------------------------
+   قیمت
+----------------------------- */
+
+function money(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return "استعلام قیمت";
+
+  }
+
+
+  const number =
+    Number(value);
+
+
+  if (Number.isFinite(number)) {
+
+    return new Intl.NumberFormat("fa-IR")
+      .format(number)
+      + " تومان";
+
+  }
+
+
+  return esc(value);
+
+}
+
+
+
+/* -----------------------------
+   شناسه برند از آدرس
+----------------------------- */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const brandId =
+  params.get("id");
+
+
+
+/* -----------------------------
+   دریافت برند و محصولات
+----------------------------- */
+
+async function loadBrand() {
+
+
+  const brandName =
+    document.getElementById(
+      "brandName"
+    );
+
+
+  const brandDescription =
+    document.getElementById(
+      "brandDescription"
+    );
+
+
+  const brandLogo =
+    document.getElementById(
+      "brandLogo"
+    );
+
+
+  const productsGrid =
+    document.getElementById(
+      "productsGrid"
+    );
+
+
+  /* اگر شناسه وجود نداشت */
+
+  if (!brandId) {
+
+    brandName.textContent =
+      "برند پیدا نشد";
+
+    brandDescription.textContent =
+      "شناسه برند مشخص نشده است.";
+
+    productsGrid.innerHTML =
+      '<div class="empty">برند نامعتبر است.</div>';
+
+    return;
+
+  }
+
+
+
+  /* -----------------------------
+     دریافت اطلاعات برند
+  ----------------------------- */
+
+  const brandResult =
+    await SB
+
+      .from("brands")
+
+      .select("*")
+
+      .eq("id", brandId)
+
+      .eq("active", true)
+
+      .single();
+
+
+
+  if (
+    brandResult.error ||
+    !brandResult.data
+  ) {
+
+    console.error(
+      "Brand error:",
+      brandResult.error
+    );
+
+
+    brandName.textContent =
+      "برند پیدا نشد";
+
+
+    brandDescription.textContent =
+      "این برند در سایت موجود نیست.";
+
+
+    productsGrid.innerHTML =
+      '<div class="empty">برند پیدا نشد.</div>';
+
+
+    return;
+
+  }
+
+
+
+  const brand =
+    brandResult.data;
+
+
+
+  /* -----------------------------
+     نمایش اطلاعات برند
+  ----------------------------- */
+
+  brandName.textContent =
+    brand.name;
+
+
+  brandDescription.textContent =
+    brand.description ||
+    "محصولات برند " +
+    brand.name;
+
+
+
+  /* لوگوی برند */
+
+  if (brand.logo_url) {
+
+    brandLogo.src =
+      brand.logo_url;
+
+  }
+
+
+  brandLogo.alt =
+    brand.name;
+
+
+
+  /* -----------------------------
+     دریافت محصولات همین برند
+  ----------------------------- */
+
+  const productsResult =
+    await SB
+
+      .from("products")
+
+      .select("*")
+
+      .eq("brand_id", brand.id)
+
+      .eq("active", true)
+
+      .order("created_at", {
+        ascending: false
+      });
+
+
+
+  if (productsResult.error) {
+
+    console.error(
+      "Products error:",
+      productsResult.error
+    );
+
+
+    productsGrid.innerHTML =
+      '<div class="empty">خطا در دریافت محصولات.</div>';
+
+
+    return;
+
+  }
+
+
+
+  const products =
+    productsResult.data || [];
+
+
+
+  /* -----------------------------
+     اگر محصولی وجود نداشت
+  ----------------------------- */
+
+  if (!products.length) {
+
+    productsGrid.innerHTML =
+
+      `<div class="empty">
+
+        هنوز محصولی برای برند
+        <strong>
+          ${esc(brand.name)}
+        </strong>
+        ثبت نشده است.
+
+      </div>`;
+
+    return;
+
+  }
+
+
+
+  /* -----------------------------
+     نمایش محصولات
+  ----------------------------- */
+
+  productsGrid.innerHTML =
+
+    products.map(product => {
+
+
+      const image =
+
+        product.image_url ||
+        "../assets/store-banner.png";
+
+
+      return `
+
+        <article class="product">
+
+
+          <div class="product-image">
+
+            <img
+
+              src="${esc(image)}"
+
+              alt="${esc(
+                product.name ||
+                brand.name
+              )}"
+
+              loading="lazy"
+
+            >
+
+
+            <span class="badge">
+
+              ${esc(
+                product.category ||
+                "باتری"
+              )}
+
+            </span>
+
+          </div>
+
+
+
+          <div class="product-body">
+
+
+            <h3>
+
+              ${esc(
+                brand.name
+              )}
+
+            </h3>
+
+
+            <b>
+
+              ${esc(
+                product.name ||
+                "محصول"
+              )}
+
+            </b>
+
+
+            <p>
+
+              ${esc(
+
+                product.description ||
+
+                "اطلاعات این محصول توسط مدیریت ثبت شده است."
+
+              )}
+
+            </p>
+
+
+
+            <div class="meta">
+
+
+              <span class="amp">
+
+                ⚡
+
+                ${esc(
+                  product.amperage ||
+                  "—"
+                )}
+
+              </span>
+
+
+              <span class="price">
+
+                ${money(
+                  product.price
+                )}
+
+              </span>
+
+
+            </div>
+
+
+          </div>
+
+
+        </article>
+
+      `;
+
+    }).join("");
+
+}
+
+
+
+/* -----------------------------
+   سال فوتر
+----------------------------- */
+
+document.getElementById(
+  "year"
+).textContent =
+  new Date().getFullYear();
+
+
+
+/* -----------------------------
+   اجرا
+----------------------------- */
+
+loadBrand();
+
+</script>
+
+
+</body>
+
+</html>

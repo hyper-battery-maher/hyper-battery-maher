@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+
+  <title>پنل مدیریت | هایپر باتری ماهر</title>
+
+  <link
+    rel="icon"
+    href="../assets/logo.png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="../css/site.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="admin.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<div
+  id="login"
+  class="admin-login"
+>
+
+  <div class="login-card">
+
+    <img
+      src="../assets/logo.png"
+      alt="هایپر باتری ماهر"
+    >
+
+    <span class="kicker">
+      هایپر باتری ماهر
+    </span>
+
+    <h1>
+      پنل مدیریت
+    </h1>
+
+    <p>
+      مدیریت محصولات، برندها و اطلاعات سایت
+    </p>
+
+
+    <input
+      id="email"
+      class="field"
+      type="email"
+      placeholder="ایمیل مدیر"
+      autocomplete="username"
+    >
+
+
+    <input
+      id="pass"
+      class="field"
+      type="password"
+      placeholder="رمز عبور"
+      autocomplete="current-password"
+    >
+
+
+    <button
+      id="loginBtn"
+      class="btn primary"
+      type="button"
+    >
+      ورود به پنل
+    </button>
+
+
+    <small id="msg"></small>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADMIN APP
+===================================================== -->
+
+<div
+  id="app"
+  hidden
+>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="admin-head">
+
+  <div>
+
+    <b>
+      هایپر باتری ماهر
+    </b>
+
+    <small>
+      پنل مدیریت سایت
+    </small>
+
+  </div>
+
+
+  <div>
+
+    <a
+      class="btn secondary"
+      href="../index.html"
+      target="_blank"
+    >
+      مشاهده سایت
+    </a>
+
+
+    <button
+      id="logout"
+      class="btn secondary"
+      type="button"
+    >
+      خروج
+    </button>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="admin-main">
+
+
+
+<!-- =====================================================
+     TABS
+===================================================== -->
+
+<div class="admin-tabs">
+
+  <button
+    data-tab="products"
+    class="active"
+    type="button"
+  >
+    محصولات
+  </button>
+
+
+  <button
+    data-tab="brands"
+    type="button"
+  >
+    برندها
+  </button>
+
+
+  <button
+    data-tab="settings"
+    type="button"
+  >
+    اطلاعات سایت
+  </button>
+
+</div>
+
+
+
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
+
+<section
+  id="tab-products"
+  class="admin-section"
+>
+
+  <div class="admin-title">
+
+    <div>
+
+      <span class="kicker">
+        موجودی سایت
+      </span>
+
+      <h2>
+        محصولات
+      </h2>
+
+      <p>
+        تصویر، برند، آمپراژ، قیمت و توضیحات را مدیریت کن.
+      </p>
+
+    </div>
+
+
+    <button
+      id="addProduct"
+      class="btn primary"
+      type="button"
+    >
+      + محصول جدید
+    </button>
+
+  </div>
+
+
+
+  <!-- PRODUCT FORM -->
+
+  <div
+    id="productFormBox"
+    class="admin-card"
+    hidden
+  >
+
+    <h3>
+      افزودن / ویرایش محصول
+    </h3>
+
+
+    <form id="productForm">
+
+      <input
+        type="hidden"
+        name="id"
+      >
+
+
+      <label>
+        برند
+
+        <select
+          id="productBrand"
+          name="brand_id"
+          class="field"
+          required
+        >
+
+          <option value="">
+            در حال بارگذاری برندها...
+          </option>
+
+        </select>
+
+      </label>
+
+
+
+      <label>
+        نام محصول
+
+        <input
+          class="field"
+          type="text"
+          name="name"
+          placeholder="مثلاً باتری ۶۰ آمپر"
+          required
+        >
+
+      </label>
+
+
+
+      <label>
+        دسته‌بندی
+
+        <input
+          class="field"
+          type="text"
+          name="category"
+          placeholder="خودرو"
+        >
+
+      </label>
+
+
+
+      <label>
+        آمپراژ
+
+        <input
+          class="field"
+          type="text"
+          name="amperage"
+          placeholder="مثلاً ۶۰ آمپر"
+        >
+
+      </label>
+
+
+
+      <label>
+        قیمت
+
+        <input
+          class="field"
+          type="number"
+          name="price"
+          min="0"
+          placeholder="مثلاً 3500000"
+        >
+
+      </label>      <label>
+        تصویر محصول
+        <input
+          class="field"
+          type="file"
+          name="image"
+          accept="image/png,image/jpeg,image/webp"
+        >
+        <small>تصویر را از کامپیوتر انتخاب کن یا داخل فرم Paste کن.</small>
+        <input type="hidden" name="image_url">
+      </label>
+
+
+
+      <label>
+        توضیحات
+
+        <textarea
+          class="field"
+          name="description"
+          rows="5"
+          placeholder="توضیحات محصول..."
+        ></textarea>
+
+      </label>
+
+
+
+      <label class="check-row">
+
+        <input
+          type="checkbox"
+          name="active"
+          checked
+        >
+
+        نمایش محصول در سایت
+
+      </label>
+
+
+
+      <div class="form-actions">
+
+        <button
+          class="btn primary"
+          type="submit"
+        >
+          ذخیره محصول
+        </button>
+
+
+        <button
+          id="cancelProduct"
+          class="btn secondary"
+          type="button"
+        >
+          انصراف
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+
+  <!-- PRODUCT LIST -->
+
+  <div
+    id="productList"
+  ></div>
+
+</section>
+
+
+
+<!-- =====================================================
+     BRANDS
+===================================================== -->
+
+<section
+  id="tab-brands"
+  class="admin-section"
+  hidden
+>
+
+  <div class="admin-title">
+
+    <div>
+
+      <span class="kicker">
+        مدیریت برندها
+      </span>
+
+      <h2>
+        برندها
+      </h2>
+
+      <p>
+        برندهای موجود فروشگاه را مدیریت کن.
+      </p>
+
+    </div>
+
+
+    <button
+      id="addBrand"
+      class="btn primary"
+      type="button"
+    >
+      + برند جدید
+    </button>
+
+  </div>
+
+
+
+  <!-- BRAND FORM -->
+
+  <div
+    id="brandFormBox"
+    class="admin-card"
+    hidden
+  >
+
+    <h3>
+      افزودن / ویرایش برند
+    </h3>
+
+
+    <form id="brandForm">
+
+      <input
+        type="hidden"
+        name="id"
+      >
+
+
+      <label>
+        نام برند
+
+        <input
+          class="field"
+          type="text"
+          name="name"
+          placeholder="مثلاً صبا باتری"
+          required
+        >
+
+      </label>
+
+
+
+      <label>
+        لینک لوگوی برند
+
+        <input
+          class="field"
+          type="url"
+          name="logo_url"
+          placeholder="https://..."
+        >
+
+      </label>
+
+
+
+      <label>
+        توضیحات برند
+
+        <textarea
+          class="field"
+          name="description"
+          rows="4"
+          placeholder="توضیحات برند..."
+        ></textarea>
+
+      </label>
+
+
+
+      <label class="check-row">
+
+        <input
+          type="checkbox"
+          name="active"
+          checked
+        >
+
+        نمایش برند در سایت
+
+      </label>
+
+
+
+      <div class="form-actions">
+
+        <button
+          class="btn primary"
+          type="submit"
+        >
+          ذخیره برند
+        </button>
+
+
+        <button
+          id="cancelBrand"
+          class="btn secondary"
+          type="button"
+        >
+          انصراف
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+
+  <!-- BRAND LIST -->
+
+  <div
+    id="brandList"
+  ></div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<section
+  id="tab-settings"
+  class="admin-section"
+  hidden
+>
+
+  <div class="admin-title">
+
+    <div>
+
+      <span class="kicker">
+        اطلاعات فروشگاه
+      </span>
+
+      <h2>
+        اطلاعات سایت
+      </h2>
+
+      <p>
+        اطلاعات تماس و مسیرهای فروشگاه را تغییر بده.
+      </p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="admin-card">
+
+    <form id="settingsForm">
+
+
+      <label>
+        شماره تماس
+
+        <input
+          id="settingPhone"
+          class="field"
+          type="text"
+          placeholder="09351232343"
+        >
+
+      </label>
+
+
+
+      <label>
+        آدرس
+
+        <textarea
+          id="settingAddress"
+          class="field"
+          rows="3"
+          placeholder="اسلامشهر، خیابان گلها، نبش البرز ۷"
+        ></textarea>
+
+      </label>
+
+
+
+      <label>
+        لینک Google Maps
+
+        <input
+          id="settingGoogle"
+          class="field"
+          type="url"
+          placeholder="https://www.google.com/maps/..."
+        >
+
+      </label>
+
+
+
+      <label>
+        لینک نشان
+
+        <input
+          id="settingNeshan"
+          class="field"
+          type="url"
+          placeholder="https://neshan.org/..."
+        >
+
+      </label>
+
+
+
+      <label>
+        لینک بلد
+
+        <input
+          id="settingBalad"
+          class="field"
+          type="url"
+          placeholder="https://balad.ir/..."
+        >
+
+      </label>
+
+
+
+      <label>
+        لینک اینستاگرام
+
+        <input
+          id="settingInstagram"
+          class="field"
+          type="url"
+          placeholder="https://instagram.com/..."
+        >
+
+      </label>
+
+
+
+      <label>
+        لینک واتساپ
+
+        <input
+          id="settingWhatsapp"
+          class="field"
+          type="url"
+          placeholder="https://wa.me/..."
+        >
+
+      </label>
+
+
+
+      <button
+        id="saveSettings"
+        class="btn primary"
+        type="submit"
+      >
+        ذخیره اطلاعات
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+<footer class="admin-footer">
+
+  هایپر باتری ماهر
+
+  <span>
+    پنل مدیریت
+  </span>
+
+</footer>
+
+
+</div>
+
+
+<!-- CONFIG -->
+
+<script src="../js/config.js"></script>
+
+<!-- ADMIN JS -->
+
+<script src="admin.js"></script>
+
+
+</body>
+</html>
